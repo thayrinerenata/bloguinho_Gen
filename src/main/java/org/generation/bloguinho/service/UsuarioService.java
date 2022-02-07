@@ -16,13 +16,17 @@ public class UsuarioService {
 	@Autowired
 	private UsuarioRepository repository;
 	
-	public Usuario CadastrarUsuario(Usuario usuario) {
-		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+	public Optional<Usuario> CadastrarUsuario(Usuario usuario) {
+				
+		if (repository.findByUsuario(usuario.getUsuario()).isPresent()) {
+			return Optional.empty();
+			
+		} else {
+			usuario.setSenha(criptografarSenha(usuario.getSenha()));
+
+			return Optional.of(repository.save(usuario));
+		}
 		
-		String senhaEncoder = encoder.encode(usuario.getSenha());
-		usuario.setSenha(senhaEncoder);
-		
-		return repository.save(usuario);
 	}
 	
 	public Optional<UserLogin> Logar(Optional<UserLogin> user) {
@@ -33,13 +37,12 @@ public class UsuarioService {
 			if(encoder.matches(user.get().getSenha(), usuario.get().getSenha())) {
 				String auth = user.get().getUsuario() + ":" + user.get().getSenha();
 				byte[] encodeAuth = Base64.encodeBase64(auth.getBytes(Charset.forName("US-ASCII")));
-				String authHeader = "Basic " + new String();//encodedAuth);
+				String authHeader = "Basic " + new String(encodeAuth);
 				
 				user.get().setToken(authHeader);
 				user.get().setNome(usuario.get().getNome());
 				
 				return user;
-				
 				
 			}
 		}
@@ -47,4 +50,11 @@ public class UsuarioService {
 		return null;
 	}
 	
+	private String criptografarSenha(String senha) {
+
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+		return encoder.encode(senha);
+	}
+
 }

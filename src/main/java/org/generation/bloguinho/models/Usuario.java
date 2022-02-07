@@ -1,5 +1,7 @@
 package org.generation.bloguinho.models;
 
+import java.util.Optional;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,7 +27,7 @@ public class Usuario {
 	private String usuario;
 	
 	@NotNull
-	@Size(min = 5, max = 100)
+	@Size(min = 5)
 	private String senha;
 
 	public long getId() {
@@ -59,5 +61,6 @@ public class Usuario {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-	
+
+		
 }
