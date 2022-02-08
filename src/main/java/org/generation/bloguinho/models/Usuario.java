@@ -29,6 +29,21 @@ public class Usuario {
 	@NotNull
 	@Size(min = 5)
 	private String senha;
+	
+	private String foto;
+	
+	public Usuario(long id, String nome, String usuario, String senha, String foto) {
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.usuario = usuario;
+		this.senha = senha;
+		this.foto = foto;
+	}
+
+	public Usuario() {
+	
+	}
 
 	public long getId() {
 		return id;
@@ -62,5 +77,12 @@ public class Usuario {
 		this.senha = senha;
 	}
 
+	public String getFoto() {
+		return foto;
+	}
+
+	public void setFoto(String foto) {
+		this.foto = foto;
+	}
 		
 }
